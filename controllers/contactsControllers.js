@@ -1,11 +1,4 @@
 import * as contactsService from "../services/contactsServices.js";
-// import {
-//   listContacts,
-//   getContactById,
-//   removeContact,
-//   addContact,
-//   updateContactId,
-// } from "../services/contactsServices.js";
 
 import HttpError from "../helpers/HttpError.js";
 

@@ -2,8 +2,6 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 import { v4 as uuidv4 } from "uuid";
 
-//const contactsPath = path.resolve("db", "contacts.json");
-
 const contactsPath = path.join("db", "contacts.json");
 
 async function listContacts() {
