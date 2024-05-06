@@ -1,6 +1,7 @@
 import * as fs from "node:fs/promises";
 import path from "node:path";
-import { v4 as uuidv4 } from "uuid";
+import crypto from "node:crypto";
+//import { v4 as uuidv4 } from "uuid";
 
 const contactsPath = path.join("db", "contacts.json");
 
@@ -38,13 +39,11 @@ async function removeContact(contactId) {
     return null;
   }
 }
-async function addContact(name, email, phone) {
+async function addContact(data) {
   try {
     const newContact = {
-      id: uuidv4(),
-      name,
-      email,
-      phone,
+      id: crypto.randomUUID(),
+      ...data,
     };
     const allContacts = await listContacts();
     allContacts.push(newContact);
