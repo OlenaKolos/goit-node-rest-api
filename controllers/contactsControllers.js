@@ -1,12 +1,3 @@
-// import {
-//   listContacts,
-//   getContactById,
-//   removeContact,
-//   addContact,
-//   updateContactId,
-// } from "../services/contactsServices.js";
-
-//import { Contact } from "../models/contact";
 import { Contact } from "../models/contact.js";
 import HttpError from "../helpers/HttpError.js";
 import mongoose from "mongoose";
