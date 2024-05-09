@@ -7,9 +7,12 @@
     },
     "dependencies": {
         "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
         "express": "^4.19.2",
         "joi": "^17.13.0",
-        "morgan": "^1.10.0"
+        "mongoose": "^8.3.4",
+        "morgan": "^1.10.0",
+        "run": "^1.5.0"
     },
     "devDependencies": {
         "nodemon": "^3.0.2"

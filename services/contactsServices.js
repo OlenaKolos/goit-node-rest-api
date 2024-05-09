@@ -1,9 +1,9 @@
-import { Contact } from "../models/contact.js";
+// import { Contact } from "../models/contact.js";
 // import * as fs from "node:fs/promises";
 // import path from "node:path";
-// import { v4 as uuidv4 } from "uuid";
+// import crypto from "node:crypto";
 
-//const contactsPath = path.join("db", "contacts.json");
+// const contactsPath = path.join("db", "contacts.json");
 
 // async function listContacts() {
 //   try {
@@ -39,13 +39,11 @@ import { Contact } from "../models/contact.js";
 //     return null;
 //   }
 // }
-// async function addContact(name, email, phone) {
+// async function addContact(data) {
 //   try {
 //     const newContact = {
-//       id: uuidv4(),
-//       name,
-//       email,
-//       phone,
+//       id: crypto.randomUUID(),
+//       ...data,
 //     };
 //     const allContacts = await listContacts();
 //     allContacts.push(newContact);

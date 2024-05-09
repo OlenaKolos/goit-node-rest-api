@@ -1,19 +1,19 @@
-import * as contactsService from "../services/contactsServices.js";
-
 // import {
 //   listContacts,
 //   getContactById,
 //   removeContact,
 //   addContact,
 //   updateContactId,
-//   updateStatusContact,
 // } from "../services/contactsServices.js";
 
+//import { Contact } from "../models/contact";
+import { Contact } from "../models/contact.js";
 import HttpError from "../helpers/HttpError.js";
+import mongoose from "mongoose";
 
 export const getAllContacts = async (req, res, next) => {
   try {
-    const result = await contactsService.listContacts();
+    const result = await Contact.find();
     res.json(result);
   } catch (error) {
     next(error);
@@ -23,7 +23,10 @@ export const getAllContacts = async (req, res, next) => {
 export const getOneContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const result = await contactsService.getContactById(id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw HttpError(400);
+    }
+    const result = await Contact.findById(id);
     if (!result) {
       throw HttpError(404, "Not found");
     }
@@ -36,7 +39,10 @@ export const getOneContact = async (req, res, next) => {
 export const deleteContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const result = await contactsService.removeContact(id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw HttpError(400);
+    }
+    const result = await Contact.findByIdAndDelete(id);
     if (!result) {
       throw HttpError(404, "Not found");
     }
@@ -48,22 +54,30 @@ export const deleteContact = async (req, res, next) => {
 
 export const createContact = async (req, res, next) => {
   try {
-    const result = await contactsService.addContact(req.body);
+    const result = await Contact.create(req.body);
     res.status(201).json(result);
   } catch (error) {
     next(error);
   }
 };
-
 export const updateContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { data } = req.body;
-    const result = await contactsService.updateContactId(id, data);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw HttpError(400);
+    }
+    const result = await Contact.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
 
     if (!result) {
       throw HttpError(404, "Not found");
     }
+
+    // if (!req.body || Object.keys(req.body).length === 0) {
+    //   throw HttpError(400, "Body must have at least one field");
+    // }
+
     res.json(result);
   } catch (error) {
     next(error);
@@ -73,12 +87,19 @@ export const updateContact = async (req, res, next) => {
 export const updateStatus = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { error } = updateFavoriteSchema.validate(req.body);
-    if (error) {
-      throw HttpError(400, error.message);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw HttpError(400);
     }
-    const { favorite } = req.body;
-    const result = await updateStatusContact(id, { favorite });
+    // const { error } = updateFavoriteSchema.validate(req.body);
+    // if (error) {
+    //   throw HttpError(400, error.message);
+    // }
+    // const { favorite } = req.body;
+
+    const result = await Contact.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+
     if (!result) {
       throw HttpError(404, "Not Found");
     }
