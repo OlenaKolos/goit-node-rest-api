@@ -24,6 +24,7 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-app.listen(8000, () => {
-  console.log("Server is running. Use our API on port: 8000");
+app.listen(3000, () => {
+  console.log("Server is running. Use our API on port: 3000");
 });
+export default app;
