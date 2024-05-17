@@ -29,13 +29,13 @@ export const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    return next(HttpError(401, "Email or password is wrong"));
+    return next(HttpError(401, "Not authorized"));
   }
 
   try {
     const passwordCompare = await bcrypt.compare(password, user.password);
     if (!passwordCompare) {
-      return next(HttpError(401, "Email or password is wrong"));
+      return next(HttpError(401, "Not authorized"));
     }
     const payload = {
       id: user._id,
@@ -44,6 +44,10 @@ export const loginUser = async (req, res, next) => {
     await User.findByIdAndUpdate(user._id, { token });
     res.json({
       token,
+      user: {
+        email: user.email,
+        subscription: user.subscription,
+      },
     });
   } catch (error) {
     next(error);
@@ -97,7 +101,7 @@ export const updateSubscription = async (req, res, next) => {
       { new: true }
     );
     if (!updatedUser) {
-      throw HttpError(404, "User not found");
+      throw HttpError(404, "Not authorized");
     }
     res.status(200).json(updatedUser);
   } catch (error) {
