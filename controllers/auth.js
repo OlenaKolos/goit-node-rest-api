@@ -126,18 +126,27 @@ export const updateSubscription = async (req, res, next) => {
 
 export const updateAvatar = async (req, res, next) => {
   try {
+    if (!req.file) {
+      return next(HttpError(400, "No file uploaded"));
+    }
+
+    if (!user) {
+      return next(HttpError(401, "Not authorized"));
+    }
+
     const { _id } = req.user;
     const user = await User.findById(_id);
     const { path: tempUpload, originalname } = req.file;
     const fileName = `${_id}_${originalname}`;
     const resultUpload = path.join(avatarsDir, fileName);
-    if (!user) {
-      return next(HttpError(401, "Not authorized"));
-    }
+
     await fs.rename(tempUpload, resultUpload);
     const image = await Jimp.read(resultUpload);
     await image.resize(250, 250).writeAsync(resultUpload);
-    const avatarURL = path.join(fileName);
+
+    //const avatarURL = path.join(fileName);
+    const avatarURL = path.join("avatars", fileName);
+
     await User.findByIdAndUpdate(_id, { avatarURL });
     res.status(200).json({
       avatarURL,
